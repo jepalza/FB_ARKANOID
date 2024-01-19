@@ -11,6 +11,6 @@ Es una conversión DIRECTA, tal cual está el original en "C", convertido direct
 
 Probablemente haya fallos imperceptibles sin corregir, pero el juego es completamente funcional.
 
-https://github.com/jepalza/FB_ARKANOID/blob/main/jpg/arka1.jpg
+![Imagen arka1.jpg](https://github.com/jepalza/FB_ARKANOID/blob/main/jpg/arka1.jpg)
 
-https://github.com/jepalza/FB_ARKANOID/blob/main/jpg/arka2.jpg
+![Imagen arka2.jpg](https://github.com/jepalza/FB_ARKANOID/blob/main/jpg/arka2.jpg)
