@@ -1,0 +1,5 @@
+ 
+' Prototypes.
+Declare Sub PrecaSinCos() 
+
+

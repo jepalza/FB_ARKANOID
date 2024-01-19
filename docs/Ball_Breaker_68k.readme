@@ -1,0 +1,34 @@
+Short:        full screen Arkanoid clone
+Author:       Clément CORDE, 68k compile by uploader
+Uploader:     lombi@iprimus.com.au (Lorence Lombardo)
+Type:         game/actio
+Version:      31-May-2012
+Architecture: m68k-amigaos
+Requires: FPU
+
+
+See the following URL for SDL requirements:-
+
+http://aminet.net/package/dev/misc/SDL-Amiga
+
+
+This Ball Breaker game build is fully mouse controlled.
+
+Also:-
+
+Press [P] to pause and [Esc] to exit.
+
+
+Alternatively if you wish to control the game with joy2mouse I have the
+following setting suggestion:-
+
+joy2mouse 1 5 15000
+
+http://aminet.net/package/driver/input/joy2mouse
+
+
+Feeling bored ?  :)
+Why not check out this URL ?
+
+http://home.iprimus.com.au/lombi/1/homepage.htm
+
