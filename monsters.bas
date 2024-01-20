@@ -2,24 +2,24 @@
 
 
 '=============================================================================
-Dim Shared As SMstTb gpMstTb(...) _  '14*3) _
-={_
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm1(0) , 100 ),_		' Pill: Aimant.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm2(0) , 100 ),_		' Pill: Mitrailleuse.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm3(0) , 100 ),_		' Pill: Balle traversante.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm4(0) , 100 ),_		' Pill: Balle bigger.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm5(0) , 100 ),_		' Pill: Balle x3
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm6(0) , 100 ),_		' Pill: Raquette bigger.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm7(0) , 0   ),_		' Pill: Raquette smaller.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm8(0) , 100 ),_		' Pill: 1Up.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm9(0) , 100 ),_		' Pill: Porte à droite.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm10(0), 100 ),_		' Pill: Speed Up.
-	Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm11(0), 100 ),_		' Pill: Speed Down.
-	Type(Cast(u32,@MstInit_Generateur), Cast(u32,@MstMain_Generateur), @gAnm_MstDoorWait(0), 0 ),_
-	Type(Cast(u32,@MstInit_Mst1), Cast(u32,@MstMain_Mst1), @gAnm_Mst1(0) , 100 ),_		' Monstres basiques des niveaux.
-	Type(Cast(u32,@MstInit_DoorR),Cast(u32,@MstMain_DoorR),@gAnm_MstDoorRight(0), 0 ),_	' Porte à droite.
-	Type(Cast(u32,@MstInit_Doh),  Cast(u32,@MstMain_Doh),  @gAnm_MstDohAppears(0), 10000 ) _	' Doh.
-}
+Dim Shared As SMstTb gpMstTb(14)   '14*3) _
+
+	gpMstTb( 0)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm1(0) , 100 )		' Pill: Aimant.
+	gpMstTb( 1)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm2(0) , 100 )		' Pill: Mitrailleuse.
+	gpMstTb( 2)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm3(0) , 100 )		' Pill: Balle traversante.
+	gpMstTb( 3)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm4(0) , 100 )		' Pill: Balle bigger.
+	gpMstTb( 4)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm5(0) , 100 )		' Pill: Balle x3
+	gpMstTb( 5)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm6(0) , 100 )		' Pill: Raquette bigger.
+	gpMstTb( 6)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm7(0) , 0   )		' Pill: Raquette smaller.
+	gpMstTb( 7)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm8(0) , 100 )		' Pill: 1Up.
+	gpMstTb( 8)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm9(0) , 100 )		' Pill: Porte à droite.
+	gpMstTb( 9)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm10(0), 100 )		' Pill: Speed Up.
+	gpMstTb(10)=Type(Cast(u32,@MstInit_Pill), Cast(u32,@MstMain_Pill), @gAnm_Itm11(0), 100 )		' Pill: Speed Down.
+	gpMstTb(11)=Type(Cast(u32,@MstInit_Generateur), Cast(u32,@MstMain_Generateur), @gAnm_MstDoorWait(0), 0 )
+	gpMstTb(12)=Type(Cast(u32,@MstInit_Mst1), Cast(u32,@MstMain_Mst1), @gAnm_Mst1(0) , 100 )		' Monstres basiques des niveaux.
+	gpMstTb(13)=Type(Cast(u32,@MstInit_DoorR),Cast(u32,@MstMain_DoorR),@gAnm_MstDoorRight(0), 0 )	' Porte à droite.
+	gpMstTb(14)=Type(Cast(u32,@MstInit_Doh),  Cast(u32,@MstMain_Doh),  @gAnm_MstDohAppears(0), 10000 ) 	' Doh.
+
 
 
 '=============================================================================
@@ -62,11 +62,11 @@ Function MstMain_Pill(pMst As SMstCommon Ptr) As s32
 		if (SprCheckColBox(AnmGetLastImage(gBreak.nPlayerAnmNo), gBreak.nPlayerPosX, gBreak.nPlayerPosY, _
 			nSpr, pMst->nPosX Shr 8, pMst->nPosY Shr 8)) Then 
 				 
-				Dim As u32	nSfx = e_Sfx_PillBonus
+				Dim As u32 nSfx = e_Sfx_PillBonus
 		  		' Fx par défaut, bonus.
 		
 				' Bonus.
-				Select Case  (pMst->nMstNo)
+				Select Case pMst->nMstNo
 				 
 				case e_Mst_Pill_Aimant 
 					BreakerBonusSetAimant() 
@@ -174,10 +174,9 @@ Function MstMain_Generateur(pMst As SMstCommon Ptr) As s32
 		pMst->nPhase = e_MstGenerateur_PhaseOuverture 
 		AnmSet(@gAnm_MstDoorOpen(0), pMst->nAnm) 	' Anim réservée à la création du monstre, pas de pb d´allocation.
 		' Choix de la sortie.
-		pSpe->nSortieNo = rand() And 3 
-		pMst->nPosX = nSortiesPosXY(pSpe->nSortieNo * 2) 
+		pSpe->nSortieNo = rand() And 3
+		pMst->nPosX = nSortiesPosXY( pSpe->nSortieNo * 2) 
 		pMst->nPosY = nSortiesPosXY((pSpe->nSortieNo * 2) + 1) 
-		'reak 
 
 	case e_MstGenerateur_PhaseOuverture 
 		if (AnmGetKey(pMst->nAnm) = 1) Then 
@@ -187,7 +186,6 @@ Function MstMain_Generateur(pMst As SMstCommon Ptr) As s32
 				gMstMisc.nNbMstLev+=1  		' Pour compter le nombre de monstres présents.
 			EndIf
 		EndIf
-
 
 	case e_MstGenerateur_PhaseSortie 
 		if (AnmGetKey(pMst->nAnm) = 2) Then 
@@ -273,11 +271,11 @@ End sub
 Function MstMain_Mst1(pMst As SMstCommon Ptr) As s32
 
 	Dim As SMstMst1 Ptr pSpe = Cast(SMstMst1 Ptr,@pMst->pData(0)) 
-	Dim As s32	nSpr 
+	Dim As s32 nSpr 
 	Dim As SBall Ptr pBall 
-	Dim As u32	i, n 
+	Dim As u32 i, n 
 
-	Select Case  (pMst->nPhase)
+	Select Case pMst->nPhase
 	 
 	case e_Mst1_PhaseWait 
 		pMst->nPhase = e_Mst1_PhaseArrivee 
@@ -424,7 +422,7 @@ End Sub
 ' Main.
 Function MstMain_DoorR(pMst As SMstCommon Ptr) As s32
 
-	Dim As s32	nSpr 
+	Dim As s32 nSpr 
 	
 	nSpr = AnmGetImage(pMst->nAnm) 
 

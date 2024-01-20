@@ -12,10 +12,10 @@ Type SFireRecord
 
 End Type 
 
-Dim Shared As SFireRecord gpFireTable(1) = { _
-	Type( @gAnm_PlyrShot(0)  , &h400, 64    , 1 , NULL ),  _	
-	Type( @gAnm_DohMissile(0), &h200, 64+128, 0 , @gAnm_DohMissileDisp(0) ) _
-	}
+Dim Shared As SFireRecord gpFireTable(1) 
+	gpFireTable(0)=Type( @gAnm_PlyrShot(0)  , &h400, 64    , 1 , NULL )	
+	gpFireTable(1)=Type( @gAnm_DohMissile(0), &h200, 64+128, 0 , @gAnm_DohMissileDisp(0) ) 
+	
 'As todo: rajouter un dust générique pour le tir ?
 
 

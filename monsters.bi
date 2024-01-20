@@ -7,7 +7,6 @@
 Type SMstTb 
 	As u32 pFctInit	
 	As u32 pFctMain
-	
 	As u32 Ptr pAnm 
 	As u16 nPoints 
 End Type 

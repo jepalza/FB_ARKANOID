@@ -24,14 +24,14 @@ End Sub
 ' Out : N° d´un slot libre. -1 si erreur.
 Function MstGetSlot() As s32
 
-	Dim As u32	i 
+	Dim As u32 i 
 	for i = gnMstLastUsed To MST_MAX_SLOTS -1      
 		if (gpMstSlots(i).nUsed = 0) Then 
 			gnMstLastUsed = i + 1 		' La recherche commencera au suivant.
-			return (i) 
+			return i
 		EndIf
 	Next
-	return (-1) 
+	return -1
 End Function
 
 ' Libère un slot.
@@ -51,7 +51,7 @@ End Sub
 ' Ajoute un monstre dans la liste.
 Function MstAdd(nMstNo As u32 , nPosX As s32 , nPosY As s32) As s32
 
-	Dim As s32	nSlotNo 
+	Dim As s32 nSlotNo 
 
 	nSlotNo = MstGetSlot()
 	if nSlotNo = -1 Then return (-1) 
@@ -84,7 +84,7 @@ Sub MstManage()
 	Dim As u32 i 
 
 	gnMstPrio = 0 
-	for  i = 0 To MST_MAX_SLOTS-1       
+	for i = 0 To MST_MAX_SLOTS-1       
 		if gpMstSlots(i).nUsed Then 
 			If gpMstSlots(i).pFctMain(@gpMstSlots(i)) = -1 Then 
 				' Le monstre est mort, on libère le slot.
@@ -100,18 +100,18 @@ End Sub
 ' Teste si un monstre se trouve dans un rectangle (pour retour des briques qui reviennent).
 Function MstCheckRectangle(nXMin As s32 , nXMax As s32 , nYMin As s32 , nYMax As s32) As u32
 
-	Dim As u32	i 
+	Dim As u32 i 
 
-	for  i = 0 To  MST_MAX_SLOTS-1       
+	for i = 0 To MST_MAX_SLOTS-1       
 		if (gpMstSlots(i).nUsed) Then 
 			if (gpMstSlots(i).nPosX >= nXMin) AndAlso _
 				(gpMstSlots(i).nPosX <= nXMax) AndAlso _
 				(gpMstSlots(i).nPosY >= nYMin) AndAlso _
 				(gpMstSlots(i).nPosY <= nYMax) Then _
-					Return (1) 
+					Return 1 
 		EndIf
 	Next
 
-	return (0) 
+	Return 0
 End Function
 

@@ -11,9 +11,9 @@
 ' Raquette joueur.
 Dim Shared As u32 gAnm_Raquette(...) = _
 { _
-e_AnmKey_Null, _
-65000, e_Spr_Raquette, _
-e_Anm_Jump, Cast(u32, -2) _
+	e_AnmKey_Null, _
+	65000, e_Spr_Raquette, _
+	e_Anm_Jump, Cast(u32, -2) _
 } 
 
 ' Raquette, apparition.
@@ -115,15 +115,15 @@ Dim Shared As u32 gAnm_RaqDeath3(...) = _
 ' Raquette, se rallonge (0).
 Dim Shared As u32 gAnm_RaqRallonge0(...) = _
 { _
-e_AnmKey_Null, _
-2, e_Spr_RaquetteRallonge0, _
-2, e_Spr_RaquetteRallonge0+1, _
-2, e_Spr_RaquetteRallonge0+2, _
-2, e_Spr_RaquetteRallonge0+3, _
-2, e_Spr_RaquetteRallonge0+4, _
-2, e_Spr_RaquetteRallonge0+5, _
-65000, e_Spr_Raquette, _
-e_Anm_Jump, Cast(u32, -2) _
+	e_AnmKey_Null, _
+	2, e_Spr_RaquetteRallonge0, _
+	2, e_Spr_RaquetteRallonge0+1, _
+	2, e_Spr_RaquetteRallonge0+2, _
+	2, e_Spr_RaquetteRallonge0+3, _
+	2, e_Spr_RaquetteRallonge0+4, _
+	2, e_Spr_RaquetteRallonge0+5, _
+	65000, e_Spr_Raquette, _
+	e_Anm_Jump, Cast(u32, -2) _
 } 
 
 ' Raquette, se réduit (0).
@@ -492,6 +492,11 @@ Dim Shared As u32 gAnm_Itm11(...) = _
 } 
 
  
+ 
+ 
+ 
+ 
+' puerta derecha de salida de nivel 
 Dim Shared As u32 gAnm_MstDoorWait(...) = _
 { _
 	e_AnmKey_Null, _
@@ -526,6 +531,11 @@ Dim Shared As u32 gAnm_MstDoorOpen(...) = _
 	3, e_Spr_SortieMst + 2, _
 	e_Anm_Goto, Cast(u32, @gAnm_MstDoorOpened(0)) _
 } 
+' -----------------------------------
+
+
+
+
 
 ' Monstres des niveaux 0.
 Dim Shared As u32 gAnm_Mst1(...) = _

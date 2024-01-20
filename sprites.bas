@@ -4,8 +4,8 @@
 
 
 ' Pour capture des sprites.
-#define	SPR_MAX_NB	2048
-Dim Shared As SSprite pSpr(SPR_MAX_NB) 
+#Define SPR_MAX_NB 2048
+Dim Shared As SSprite pSpr(SPR_MAX_NB-1) 
 Dim Shared As u32 gnSprNbSprites 		' Nb de sprites capturés.
 
 
@@ -16,9 +16,9 @@ Type SSprStockage
 	As u32 nPrio 
 End Type 
 
-#define	SPR_STO_MAX	512
-Dim Shared As SSprStockage gpSprSto(SPR_STO_MAX)
-Dim Shared As SSprStockage Ptr gpSprSort(SPR_STO_MAX) 	' Pour tri.
+#Define SPR_STO_MAX 512
+Dim Shared As SSprStockage gpSprSto(SPR_STO_MAX-1)
+Dim Shared As SSprStockage Ptr gpSprSort(SPR_STO_MAX-1) 	' Pour tri.
 
 
 ' Initialisation du moteur.
@@ -279,8 +279,7 @@ End Sub
 Sub SprDisplay(nSprNo As u32 , nPosX As s32 , nPosY As s32 , nPrio As u32)
 
 	if (gnSprSto >= SPR_STO_MAX) Then 
-   	Print "Sprites: Out of slots!"
-   	Exit sub
+   	Print "Sprites: Out of slots!":Beep:end
 	EndIf
   
 	if (nSprNo = SPR_NoSprite) Then Exit sub 			' Peut servir pour des clignotements, par exemple.
@@ -291,32 +290,90 @@ Sub SprDisplay(nSprNo As u32 , nPosX As s32 , nPosY As s32 , nPrio As u32)
 	gpSprSto(gnSprSto).nPrio  = nPrio
 
 	gpSprSort(gnSprSto) = @gpSprSto(gnSprSto) 	' Pour tri.
-'Print gnSprSto,nSprNo,nPosX,nPosY,nprio,gpSprSort(gnSprSto)
+'Print "Estoy en SprDisplay:";gnSprSto,nSprNo,nPosX,nPosY,nprio,gpSprSort(gnSprSto)
 	gnSprSto+=1  
 
 End Sub
 
+
+
+' estructura "SSprStockage"
+	' u32 nSprNo 
+	' s32 nPosX, nPosY 
+	' u32 nPrio 
 ' La comparaison du qsort.
-Function qscmp Cdecl(ByVal pEl1 As Const Any Ptr , ByVal pEl2 As Const Any Ptr ) As Long
-	Dim As u32 Ptr spr1 = Cast(SSprStockage Ptr,pEl1)->nPrio
-	Dim As u32 Ptr spr2 = Cast(SSprStockage Ptr,pEl2)->nPrio
+' -----------------------------------------------------
+'    esta rutina NO creo que funcione bien, me parece <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+'    que ordena mal las prioridades
+Function qscmp2 Cdecl( pEl1 As SSprStockage , pEl2 As SSprStockage ) As Long
+	Dim As u32  spr1 = pEl1.nPrio
+	Dim As u32  spr2 = pEl2.nPrio
 
-	If spr1=0 Then Return -1
-	If spr2=0 Then Return 1
-
-	Return *(spr1+3) - *(spr2+3)
+	Return spr2 - spr1
 End Function
 
+
+'************************************************************
+' en lugar de la anterior rutina de ordenacion, empleo esta otra en FB encontrada en el foro FREEBASIC
+'************************************************************
+Sub QuickSort(ArrayToSort() As SSprStockage Ptr, StartEl As integer, NumEls As Integer)
+'************************************************************
+'Standard QuickSort Routine
+'************************************************************
+  Dim Temp As integer
+  Dim As Integer First, Last, i, j, StackPtr
+  ReDim As Integer QStack(NumEls \ 5 + 10)
+    First = StartEl
+    Last = StartEl + NumEls - 1
+      Do
+        Do
+          Temp = ArrayToSort((Last + First) \ 2)->nPrio
+          i = First
+          j = Last
+            Do
+              While ArrayToSort(i)->nPrio < Temp
+                i = i + 1
+              Wend
+              While ArrayToSort(j)->nPrio > Temp
+                j = j - 1
+              Wend
+              If i > j Then Exit Do
+              If i < j Then SWAP ArrayToSort(i), ArrayToSort(j)
+              i = i + 1
+              j = j - 1
+            Loop While i <= j
+          If i < Last Then
+            QStack(StackPtr) = i
+            QStack(StackPtr + 1) = Last
+            StackPtr = StackPtr + 2
+          End If
+          Last = j
+        Loop While First < Last
+        If StackPtr = 0 Then Exit Do
+        StackPtr = StackPtr - 2
+        First = QStack(StackPtr)
+        Last = QStack(StackPtr + 1)
+      Loop
+ Erase QStack
+End Sub
+'************************************************************
+
+
+	
 ' Trie la liste des sprites et les affiche.
 ' A appeler une fois par frame.
 Sub SprDisplayAll()
 
 	Dim As u32 i 
 
-	if (gnSprSto = 0) Then Exit Sub 		' Rien à faire ?
+	If (gnSprSto = 0) Then Exit Sub 		' Rien à faire ?
 
 	' Tri sur la priorité.
-	qsort( @gpSprSort(0), gnSprSto-1, sizeof(SSprStockage ptr), CPtr(Any Ptr,@qscmp) )
+	' anulo la rutina QSORT (y por ende, el "include crt.bi") por que creo que no ordena bien las prioridades
+	'qsort( @gpSprSort(0), gnSprSto-1, sizeof(SSprStockage ptr), CPtr(Any Ptr,@qscmp2) )
+	
+	' empleo esta en su lugar, que he encontrado en el foro FreeBasic, y solo es un pelin mal lenta
+	QuickSort(gpSprSort(),0,gnSprSto-1)
 
 	' Affichage.
 	SDL_LockSurface(gVar.pScreen) 

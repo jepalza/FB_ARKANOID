@@ -297,7 +297,7 @@ Sub InitLevel(nLevel As u32)
 		' Rajoute un générateur de monstres.
 		MstAdd(e_Mst_Generateur, 0, 0) 
 	EndIf
-  
+	
 	' Rajoute une porte à droite.
 	MstAdd(e_Mst_DoorR, WALL_XMax, SCR_Height - 13 - 6) 
 
@@ -368,7 +368,7 @@ End Sub
 ' Init des slots des balles. (1 utilisée, les autres à vide).
 Sub BallsInitSlots()
 
-	Dim As u32	i 
+	Dim As u32 i 
 
 	gBreak.nBallsNb = 0 
 	for i = 0 To BALL_MAX_NB -1      
@@ -381,7 +381,7 @@ End Sub
 Sub BallsKill()
 
  	Dim As SBall Ptr pBall 
-	Dim As u32	i 
+	Dim As u32 i 
 
 	for i = 0 To BALL_MAX_NB -1      
 		pBall = @gBreak.pBalls(i) 
@@ -404,20 +404,24 @@ Sub Brk_PlyrInitLife()
 	gBreak.nPlayerFlags And=  INV(PLAYER_Flg_Aimant Or PLAYER_Flg_Mitrailleuse) 	' Armes.
 	gBreak.nPlayerFlags And=  INV(PLAYER_Flg_NoKill) 		' NoKill.
 	gBreak.nPlayerFlags And=  INV(PLAYER_Flg_DoorR) 		' Door Right.
+	
 	' Taille de la raquette.
 	gBreak.nPlayerRSize = 1 
+	
 	' Raquette normale.
-'	gBreak.nPlayerAnmNo = AnmSet(@gAnm_Raquette(0), gBreak.nPlayerAnmNo);
 	gBreak.nPlayerAnmNo 		= AnmSet(@gAnm_RaqAppear(0), gBreak.nPlayerAnmNo) 
 	gBreak.nPlayerAnmClignG = AnmSet(@gAnm_RaqClignG(0), gBreak.nPlayerAnmClignG) 
 	gBreak.nPlayerAnmClignD = AnmSet(@gAnm_RaqClignD(0), gBreak.nPlayerAnmClignD) 
+	
 	' Positionnement au centre.
 	gBreak.nPlayerPosX = SCR_Width / 2 
 	gBreak.nPlayerPosY = SCR_Height - 17 
+	
 	' Replace la souris à l´endroit du joueur.
 	SDL_WarpMouse(gBreak.nPlayerPosX, gBreak.nPlayerPosY) 
 
-	gBreak.nTimerLevelDisplay = TIMER_DisplayLevel 	' Compteur pour affichage du n° de level.
+ 	' Compteur pour affichage du n° de level.
+	gBreak.nTimerLevelDisplay = TIMER_DisplayLevel
 
 End Sub
 
@@ -484,12 +488,14 @@ End Sub
 ' Tableau de bord.
 Sub BreakerHUD()
 
-	Dim As u32	i 
+	Dim As u32 i 
 
-	' Le nombre de vies restantes.
-	for i = 0 To gBreak.nPlayerLives-1       
-		SprDisplay(e_Spr_HUDRaquette, WALL_XMin + (i * 16), SCR_Height - 7, e_Prio_HUD) 
-	Next
+	' Le nombre de vies restantes. 
+	If gBreak.nPlayerLives>0 Then ' jepalza: fallaba si vidas=0 
+		for i = 0 To gBreak.nPlayerLives-1    
+			SprDisplay(e_Spr_HUDRaquette, WALL_XMin + (i * 16), SCR_Height - 7, e_Prio_HUD) 
+		Next
+	EndIf
 
 	' Affichage du score. Note pour le centrage : Les chiffres sont en 8x8.
 	Dim As String pScore = "00000000" 
@@ -501,7 +507,7 @@ End Sub
 ' Dessin du jeu.
 Sub BreakerDraw()
 
-	Dim As u32	i, j, k 
+	Dim As u32 i, j, k 
 
 	' Dessin des briques.
 	k = 0 
@@ -592,7 +598,7 @@ End Sub
 
 
 ' Collisions balle-murs.
-Function CollWalls(  pBall As SBall Ptr) As u32', s32 *pnOldX, s32 *pnOldY)
+Function CollWalls(pBall As SBall Ptr) As u32
 
 	Dim As u32 RetVal = 0 
 
@@ -622,7 +628,7 @@ End Function
 ' Renvoie les flags de la brique. -1 si pas de choc.
 Function BrickHit(nBx As u32 , nBy As u32 , nBallFlags As u32) As u32
 
-	Dim As u32	nRetVal = -1 
+	Dim As u32 nRetVal = -1 
 
 	if (nBx < TABLE_Width) AndAlso (nBy < TABLE_Height) AndAlso ((gBreak.pLevel((nBy * TABLE_Width) + nBx).nPres)<>0) Then 
 		Dim As SBrique Ptr pBrick = @gBreak.pLevel((nBy * TABLE_Width) + nBx) 
@@ -632,7 +638,7 @@ Function BrickHit(nBx As u32 , nBy As u32 , nBallFlags As u32) As u32
 
 			pBrick->nCnt-=1  
 			' Balle traversante, on force le compteur à 0.
-			if (nBallFlags And BALL_Flg_Traversante) Then pBrick->nCnt = 0 
+			if (nBallFlags And BALL_Flg_Traversante)<>0 Then pBrick->nCnt = 0 
 			if (pBrick->nCnt = 0) Then 
 
 				pBrick->nPres = 0 
@@ -654,7 +660,7 @@ Function BrickHit(nBx As u32 , nBy As u32 , nBallFlags As u32) As u32
 
 				gBreak.nRemainingBricks-=1  	' Une brique de moins.
 
-				if (pBrick->nFlags And BRICK_Flg_ComingBack) Then gBreak.nBricksComingBackNbCur+=1  	' Nb de briques qui doivent revenir.
+				if (pBrick->nFlags And BRICK_Flg_ComingBack)<>0 Then gBreak.nBricksComingBackNbCur+=1  	' Nb de briques qui doivent revenir.
 			 
 			else
 
@@ -697,10 +703,10 @@ Function CollBricks(pBall As SBall Ptr ,  pnOldX As s32 Ptr ,  pnOldY As s32 Ptr
 
 
 	' Numéros des briques extrêmes à tester.
-	vx1 = ((pBall->nPosX Shr 8) - WALL_XMin - pBall->nRayon) / BRICK_Width 		' Note: testé avec une table à la place du div, on ne gagne rien !
-	vx2 = ((pBall->nPosX Shr 8) - WALL_XMin + pBall->nRayon) / BRICK_Width 
-	vy1 = ((pBall->nPosY Shr 8) - WALL_YMin - pBall->nRayon) / BRICK_Height 
-	vy2 = ((pBall->nPosY Shr 8) - WALL_YMin + pBall->nRayon) / BRICK_Height 
+	vx1 = ((pBall->nPosX Shr 8) - WALL_XMin - pBall->nRayon) \ BRICK_Width 		' Note: testé avec une table à la place du div, on ne gagne rien !
+	vx2 = ((pBall->nPosX Shr 8) - WALL_XMin + pBall->nRayon) \ BRICK_Width 
+	vy1 = ((pBall->nPosY Shr 8) - WALL_YMin - pBall->nRayon) \ BRICK_Height 
+	vy2 = ((pBall->nPosY Shr 8) - WALL_YMin + pBall->nRayon) \ BRICK_Height 
 
 	cxx = 0: cyy = 0: coin = 0 
 	' Boucle dans les briques potentielles.
@@ -723,7 +729,7 @@ Function CollBricks(pBall As SBall Ptr ,  pnOldX As s32 Ptr ,  pnOldY As s32 Ptr
 				nY = (pBall->nPosY Shr 8) - pBall->nRayon 
 				for y = 0 To pBall->nDiam-1       
 					nX = (pBall->nPosX Shr 8) - pBall->nRayon 
-					for x = 0 To  pBall->nDiam -1      
+					for x = 0 To pBall->nDiam -1      
 						' Pixel à tester ?
 						if (pBall->pBallMask((y * BALL_GfxLg) + x)) Then 
 							if (nX >= nBXMin) AndAlso (nX <= nBXMax) AndAlso (nY >= nBYMin) AndAlso (nY <= nBYMax) Then 
@@ -731,7 +737,7 @@ Function CollBricks(pBall As SBall Ptr ,  pnOldX As s32 Ptr ,  pnOldY As s32 Ptr
 
 								' Gestion du choc sur la brique.
 								nBFlags = BrickHit(i, j, pBall->nFlags) 
-								if (nBFlags And BRICK_Flg_Indestructible) Then nFlg = 2 	' b1
+								if (nBFlags And BRICK_Flg_Indestructible)<>0 Then nFlg = 2 	' b1
 
 								' Choc.
 								if ((pBall->nPosX Shr 8) >= nBXMin) AndAlso ((pBall->nPosX Shr 8) <= nBXMax) Then 
@@ -740,8 +746,8 @@ Function CollBricks(pBall As SBall Ptr ,  pnOldX As s32 Ptr ,  pnOldY As s32 Ptr
 									cxx Or= nFlg 
 								Else
 									coin Or= nFlg 
-									dx = (pBall->nPosX Shr 8) - (nBXMin + (BRICK_Width / 2)) 
-									dy = (pBall->nPosY Shr 8) - (nBYMin + (BRICK_Height / 2)) 
+									dx = (pBall->nPosX Shr 8) - (nBXMin + (BRICK_Width \ 2)) 
+									dy = (pBall->nPosY Shr 8) - (nBYMin + (BRICK_Height \ 2)) 
 								EndIf
 								'y = 1000: x = 1000 ' Sortie des boucles.
 								Exit For , For
@@ -755,13 +761,17 @@ Function CollBricks(pBall As SBall Ptr ,  pnOldX As s32 Ptr ,  pnOldY As s32 Ptr
 		Next ' for (i = vx1; i <= vx2; i++)
 	Next ' for (j = vy1; j <= vy2; j++)
 
+
+
 	' Balle traversante ?
-	if (pBall->nFlags And BALL_Flg_Traversante) Then 
+	if (pBall->nFlags And BALL_Flg_Traversante)<>0 Then 
 		' On cleare les b0 => On ne garde que les chocs forcés.
 		cxx  And=  INV(1) 
 		cyy  And=  INV(1) 
 		coin And=  INV(1) 
 	EndIf
+	
+	
   
 	' Coin ?
 	if (cxx = 0) AndAlso (cyy = 0) AndAlso (coin<>0) Then 
@@ -799,7 +809,7 @@ Function CollBricks(pBall As SBall Ptr ,  pnOldX As s32 Ptr ,  pnOldY As s32 Ptr
 			pBall->nAngle = IIf(pBall->nAngle >= 128 , 128+16 , 128-16) 
 		EndIf
 	EndIf
-  
+
 	' Col X.
 	if (cxx) Then 
 		pBall->nAngle = 128 - pBall->nAngle 
@@ -829,7 +839,7 @@ Function CollBricks(pBall As SBall Ptr ,  pnOldX As s32 Ptr ,  pnOldY As s32 Ptr
 End Function
 
 
-#define	BALL_DEPL_MAX	&h300		' Pas plus grand que le rayon mini d´une balle !
+#Define BALL_DEPL_MAX &h300		' Pas plus grand que le rayon mini d´une balle !
 ' Déplacement de la balle.
 Sub Brk_MoveBall()
 
@@ -902,13 +912,13 @@ Sub Brk_MoveBall()
 					EndIf
 			  
 					' Collision avec la raquette ?
-					if (pBall->nAngle >= 128) AndAlso  (pBall->nPosY >= (gBreak.nPlayerPosY     - CLng(pBall->nRayon)) Shl 8) AndAlso  (pBall->nPosY <= (gBreak.nPlayerPosY + 4 - CLng(pBall->nRayon)) Shl 8) Then 
+					if (pBall->nAngle >= 128) AndAlso (pBall->nPosY >= (gBreak.nPlayerPosY - CLng(pBall->nRayon)) Shl 8) AndAlso  (pBall->nPosY <= (gBreak.nPlayerPosY + 4 - CLng(pBall->nRayon)) Shl 8) Then 
 				
 						if (SprCheckColBox(AnmGetLastImage(gBreak.nPlayerAnmNo), gBreak.nPlayerPosX, gBreak.nPlayerPosY, pBall->nSpr, pBall->nPosX Shr 8, pBall->nPosY Shr 8)) Then 
 	
 							Dim As SSprite Ptr pSpr = SprGetDesc(AnmGetLastImage(gBreak.nPlayerAnmNo))  
-							Dim As s32	nXMin, nXMax 
-							Dim As u32	nBatSfx = e_Sfx_BatPing 	' Sfx par défaut.
+							Dim As s32 nXMin, nXMax 
+							Dim As u32 nBatSfx = e_Sfx_BatPing 	' Sfx par défaut.
 				
 							nXMin = gBreak.nPlayerPosX - pSpr->nPtRefX 
 							nXMax = nXMin + pSpr->nLg - 1 
@@ -972,7 +982,7 @@ Sub Brk_MoveBall()
 	
 	Next ' end for slots
 
-	' Reste-t´il des balles en jeu ?
+	' Reste-t´il des balles en jeu ? 
 	if (gBreak.nBallsNb = 0) Then 
 		PlayerSetDeath() 
 	EndIf
@@ -1010,7 +1020,7 @@ Sub Brk_MovePlayer()
 	Dim As s32	nXMin, nXMax 
 
 	' Dans le passage à droite ?
-	if (gBreak.nPlayerFlags And PLAYER_Flg_DoorR) Then 
+	if (gBreak.nPlayerFlags And PLAYER_Flg_DoorR)<>0 Then 
 		' On lache les balles tout le temps. On ne s´occupe pas du flag => Ca simplifie la gestion.
 		Aimant_ReleaseBalls() 
 
@@ -1083,25 +1093,25 @@ End Sub
 ' Teste si une balle se trouve dans un rectangle (pour retour des briques qui reviennent).
 Function BallsCheckRectangle(nXMin As s32 , nXMax As s32 , nYMin As s32 , nYMax As s32) As u32
 
-	Dim As u32	i 
+	Dim As u32 i 
 	Dim As SBall Ptr pBall 
 
 	for i = 0 To BALL_MAX_NB-1       
 		pBall = @gBreak.pBalls(i) 
 		if (pBall->nUsed) Then 
-			if (pBall->nPosX >= nXMin) _
+			if          (pBall->nPosX >= nXMin) _
 				 AndAlso (pBall->nPosX <= nXMax) _
 				 AndAlso (pBall->nPosY >= nYMin) _
 				 AndAlso (pBall->nPosY <= nYMax) Then 
-			 return (1) 
+			 return 1 
 			EndIf
 		EndIf
 	Next
 
-	return (0) 
+	return 0 
 End Function
 
-#define	BCB_Offset	16
+#Define BCB_Offset 16
 ' Gestion des briques qui reviennent.
 Sub Brk_BricksComingBack()
 
@@ -1122,7 +1132,7 @@ Sub Brk_BricksComingBack()
 					Dim As s32 nXMin, nYMin, nXMax, nYMax 
 					' Coordonées à tester. Avec l´offset, englobe les rectangles de col des monstres et des balles. Ca permet de ne tester qu´un point.
 					nXMin = ((i * BRICK_Width ) + WALL_XMin - BCB_Offset) Shl 8 
-					nXMax = ((i * BRICK_Width ) + WALL_XMin + BRICK_Width - 1 + BCB_Offset) Shl 8 
+					nXMax = ((i * BRICK_Width ) + WALL_XMin + BRICK_Width  - 1 + BCB_Offset) Shl 8 
 					nYMin = ((j * BRICK_Height) + WALL_YMin - BCB_Offset) Shl 8 
 					nYMax = ((j * BRICK_Height) + WALL_YMin + BRICK_Height - 1 + BCB_Offset) Shl 8 
 					if (MstCheckRectangle(nXMin, nXMax, nYMin, nYMax) = 0) AndAlso _
@@ -1249,17 +1259,17 @@ Sub BreakerGame()
 		EndIf
 
 	case e_Game_LevelCompleted 		' Niveau terminé.
-		Dim tmp As Byte=0 ' jepalza
-		if gBreak.nLevel  < (LEVEL_Max - 1) Then 
-			gBreak.nLevel+=1:tmp=1 ' jepalza
+		if gBreak.nLevel < (LEVEL_Max - 1) Then 
 			' Niveau suivant.
+			gBreak.nLevel+=1
 			BreakerInit() 
 			gBreak.nPhase = e_Game_Normal 
 		Else
 			' Jeu terminé. Sortie.
+			gBreak.nLevel+=1
 			ExgExit(e_Game_AllClear) 
 		EndIf
-		If tmp=0 Then gBreak.nLevel+=1 ' jepalza
+		
 
 	case e_Game_Pause 			' Pause.
 		' Normalement, on ne passe jamais ici...

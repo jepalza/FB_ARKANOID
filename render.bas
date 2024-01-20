@@ -74,6 +74,13 @@ Function VideoModeSet(nScrWidth As u32 , nScrHeight As u32 , nSDL_Flags As u32) 
 		SDL_FillRect(pSurf, NULL, 7)
 	EndIf
   		
+  	' jepalza: para centrar la ventana SDL (en SDL2 existe un comando, pero en SDL1 debemos hacerlo asi)	
+  	Dim As HWND hwnd_
+	Dim As SDL_SysWMInfo info
+	SDL_GetWMInfo(@info)
+	hwnd_ = info.Window
+  	SetWindowPos(hwnd_,NULL , 1200,10, -1, -1, SWP_NOSIZE) ' SWP_NOSIZE=conservar ancho y alto actuales
+  	
 	return (pSurf) 
 End Function
 

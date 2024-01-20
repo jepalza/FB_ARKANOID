@@ -15,12 +15,12 @@ End Enum
 Enum 
 	e_AnmKey_Null = 0,
 	
-	e_AnmKey_PlyrAppear	= ANMPRIO(1) + 0,
-	e_AnmKey_PlyrDeath	= ANMPRIO(2) + 0,
+	e_AnmKey_PlyrAppear			= ANMPRIO(1) + 0,
+	e_AnmKey_PlyrDeath			= ANMPRIO(2) + 0,
 
-	e_AnmKey_MstDohMoutOpens  = ANMPRIO(1) + 0,
-	e_AnmKey_MstDohMoutCloses = ANMPRIO(1) + 1,
-	e_AnmKey_MstDohAppears    = ANMPRIO(1) + 2,
-	e_AnmKey_MstDohDisappears = ANMPRIO(3) + 0,
-	e_AnmKey_MstDohHit	     = ANMPRIO(2) + 0
+	e_AnmKey_MstDohMoutOpens  	= ANMPRIO(1) + 0,
+	e_AnmKey_MstDohMoutCloses 	= ANMPRIO(1) + 1,
+	e_AnmKey_MstDohAppears    	= ANMPRIO(1) + 2,
+	e_AnmKey_MstDohDisappears 	= ANMPRIO(3) + 0,
+	e_AnmKey_MstDohHit	     	= ANMPRIO(2) + 0
 End Enum

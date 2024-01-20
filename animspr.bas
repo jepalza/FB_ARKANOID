@@ -11,10 +11,10 @@ End Enum
 Type SAnim 
 	As u8 nUsed 		' 0 = slot vide, 1 = slot occupé.
 	As u8 nFlags 
-	As u32 Ptr pOrg 		' Ptr sur le début de l´anim.
+	As u32 Ptr pOrg 	' Ptr sur le début de l´anim.
 	As u32 Ptr pAnm 
 	As u32 nKey 		' Clef d´anim. 16b Priorité | 16b No.
-	As u32 nFramesCnt 	' Compteur de frames restant pour l´image en cours.
+	As u32 nFramesCnt ' Compteur de frames restant pour l´image en cours.
 	As u32 nCurSpr 	' N° du sprite en cours.
 End Type 
 
@@ -81,10 +81,10 @@ Function AnmSetIfNew( pAnm As u32 Ptr , nSlotNo As s32) As s32
 
 	if nSlotNo = -1 Then 
 		return (AnmSet(pAnm, nSlotNo)) 
-	ElseIf  (pAnmSlots(nSlotNo).pOrg <> pAnm) Then
+	ElseIf pAnmSlots(nSlotNo).pOrg <> pAnm Then
 		' Anim différente. On teste la priorité.
 		if ((*pAnm) Shr 16) >= (pAnmSlots(nSlotNo).nKey Shr 16) Then 
-			return (AnmSet(pAnm, nSlotNo)) 
+			return AnmSet(pAnm, nSlotNo)
 		EndIf
 	EndIf
   
@@ -102,7 +102,7 @@ Function AnmSet( pAnm As u32 Ptr , nSlotNo As s32) As s32
 		if nSlotNo = -1 Then return (-1) 
 		pAnmSlots(nSlotNo).nUsed = 1 
 	EndIf
-  
+
 	pAnmSlots(nSlotNo).nFlags = 0 			' Flags.
 	pAnmSlots(nSlotNo).nKey = *pAnm 		' Clef d´anim.
 	pAnmSlots(nSlotNo).pOrg =  pAnm 			' Ptr sur le début de l´anim.

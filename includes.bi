@@ -29,7 +29,7 @@
 #include "menu.bi"
 #include "sfx.bi"
 
-#include "crt.bi" ' para QSORT en SPRITES.BAS
+'#Include "crt.bi" ' para QSORT en SPRITES.BAS
 
 
 ' Define.
